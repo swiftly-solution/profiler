@@ -21,6 +21,7 @@ public partial class Profiler : BasePlugin
     public float EndMemory = 0.0f;
 
     public IConVar<int>? BotQuotaConVar;
+    public ProfileServices profilerService = new();
 
     public Profiler(ISwiftlyCore core) : base(core)
     {
@@ -36,6 +37,7 @@ public partial class Profiler : BasePlugin
 
     public override void Load(bool hotReload)
     {
+        profilerService.Enable();
         BotQuotaConVar = Core.ConVar.Find<int>("bot_quota");
     }
 
@@ -83,6 +85,14 @@ public partial class Profiler : BasePlugin
         Console.WriteLine($"Memory Before Test: {StartMemory} MB");
         Console.WriteLine($"Memory After Test: {EndMemory} MB");
         Console.WriteLine($"Memory After GC: {MemoryAfterGC} MB");
+    }
+
+    [Command("savetest")]
+    public void SaveTestCommand(ICommandContext context)
+    {
+        var json = profilerService.GenerateJSONPerformance("");
+        File.WriteAllText("profiler_output.json", json);
+        Console.WriteLine("Profiler data saved to profiler_output.json");
     }
 
     [EventListener<EventDelegates.OnEntitySpawned>]

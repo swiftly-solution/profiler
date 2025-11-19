@@ -67,10 +67,10 @@ public partial class ModSharpProfiler : IModSharpModule, IEntityListener, IEvent
         profilerService.Enable();
 
         _sharedSystem.GetEntityManager().InstallEntityListener(this);
-        _sharedSystem.GetConVarManager().CreateConsoleCommand("saveprofiler", OnSaveProfiler);
+        _sharedSystem.GetConVarManager().CreateConsoleCommand("savetest", OnSaveProfiler);
         _sharedSystem.GetConVarManager().CreateConsoleCommand("preparetest", OnPrepareTest);
         _sharedSystem.GetConVarManager().CreateConsoleCommand("starttest", OnStartTest);
-        _sharedSystem.GetConVarManager().CreateConsoleCommand("stoptest", OnStopTest);
+        _sharedSystem.GetConVarManager().CreateConsoleCommand("endtest", OnStopTest);
 
         _hooks.PostEventAbstract.InstallHookPre(OnSendNetMessage);
         _modSharp.HookNetMessage(ProtobufNetMessageType.GE_SosStartSoundEvent);

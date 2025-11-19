@@ -8,30 +8,28 @@ public partial class Profiler
 
     public void SendNetMessages()
     {
-        Core.Profiler.StartRecording($"Send NetMessage to All Players ({NetMessageMultiplier} times)");
+        profilerService.StartRecording($"Send NetMessage to All Players");
 
-        Core.NetMessage.Send<CUserMessageShake>(um =>
-        {
-            um.Frequency = 1f;
-            um.Recipients.AddAllPlayers();
-        });
+        var netmsg = Core.NetMessage.Create<CUserMessageShake>();
+        netmsg.Frequency = 1f;
+        netmsg.SendToAllPlayers();
 
-        Core.Profiler.StopRecording($"Send NetMessage to All Players ({NetMessageMultiplier} times)");
+        profilerService.StopRecording($"Send NetMessage to All Players");
     }
 
     public void CMsgSosStartSoundEventHandler(CMsgSosStartSoundEvent msg)
     {
-        Core.Profiler.StartRecording($"CMsgSosStartSoundEvent Add All Recipients (Server sends NetMessage, {NetMessageMultiplier} times)");
+        profilerService.StartRecording($"CMsgSosStartSoundEvent Add All Recipients (Server sends NetMessage, {NetMessageMultiplier} times)");
 
         for (int i = 0; i < NetMessageMultiplier; i++)
             msg.Recipients.AddAllPlayers();
 
-        Core.Profiler.StopRecording($"CMsgSosStartSoundEvent Add All Recipients (Server sends NetMessage, {NetMessageMultiplier} times)");
+        profilerService.StopRecording($"CMsgSosStartSoundEvent Add All Recipients (Server sends NetMessage, {NetMessageMultiplier} times)");
     }
 
     public void CCLCMsg_MoveHandler(CCLCMsg_Move msg, int playerid)
     {
-        Core.Profiler.StartRecording($"CCLCMsg_Move Simulate Data (Server receives NetMessage, {NetMessageMultiplier} times)");
+        profilerService.StartRecording($"CCLCMsg_Move Simulate Data (Server receives NetMessage, {NetMessageMultiplier} times)");
 
         for (int i = 0; i < NetMessageMultiplier; i++)
         {
@@ -39,6 +37,6 @@ public partial class Profiler
             _ = data.Length * playerid;
         }
 
-        Core.Profiler.StopRecording($"CCLCMsg_Move Simulate Data (Server receives NetMessage, {NetMessageMultiplier} times)");
+        profilerService.StopRecording($"CCLCMsg_Move Simulate Data (Server receives NetMessage, {NetMessageMultiplier} times)");
     }
 }

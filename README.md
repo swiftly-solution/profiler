@@ -14,13 +14,13 @@ Environment:
 
 ## Results
 
-![Results](https://cdn.skuzzi.ro/9rhH3TkMjNM4660AjSF9NxH2tvHrUIqx.png)
+![Results](https://cdn.skuzzi.ro/15TGv1nR8KF56BnxghfnsigWLAXTkQVn.png)
 
 ## Memory Results
 
 ### SwiftlyS2
 
-![MemResults](https://cdn.skuzzi.ro/g96yO0Q10ivfA6qxQF3ETHmEZIyWdIpe.png)
+![MemResults](https://cdn.skuzzi.ro/yLTICJRjx6TS6mHYPQj6ISsv1xElv2kW.png)
 
 ### CounterStrikeSharp
 
@@ -30,7 +30,7 @@ Environment:
 
 ### ModSharp
 
-![MemResults](https://cdn.skuzzi.ro/6kNWRBOXQqd3tISmFoKI4A6ie21KWfVk.png)
+![MemResults](https://cdn.skuzzi.ro/aq8xK8O0ECRnqOf2FtKwnDj3SxnPVbut.png)
 
 ## Why is there no data for ConVar Replication?
 

@@ -64,7 +64,7 @@ public partial class CSSharpProfiler
         int index = 0;
         foreach (var entity in Entities)
         {
-            var textEntity = entity as CPointWorldText;
+            var textEntity = entity.As<CPointWorldText>();
             textEntity!.Teleport(new CounterStrikeSharp.API.Modules.Utils.Vector(0, index * 10, 0), null, null);
             index++;
         }
@@ -90,15 +90,19 @@ public partial class CSSharpProfiler
     public void TeleportAllGameEntities()
     {
         var allEntities = Utilities.GetAllEntities();
+        var convertedEntities = new List<CBaseEntity>();
+        foreach (var entity in allEntities)
+        {
+            convertedEntities.Add(entity.As<CBaseEntity>());
+        }
 
         profilerService.StartRecording("Teleport All Game Entities");
 
-        foreach (var entity in allEntities)
+        foreach (var entity in convertedEntities)
         {
             if (entity.DesignerName != "cs_player_controller")
             {
-                var baseEntity = entity.As<CBaseEntity>();
-                baseEntity!.Teleport(new CounterStrikeSharp.API.Modules.Utils.Vector(Random.Shared.Next(-1000, 1000), Random.Shared.Next(-1000, 1000), Random.Shared.Next(0, 500)), null, null);
+                entity.Teleport(new CounterStrikeSharp.API.Modules.Utils.Vector(Random.Shared.Next(-1000, 1000), Random.Shared.Next(-1000, 1000), Random.Shared.Next(0, 500)), null, null);
             }
         }
 

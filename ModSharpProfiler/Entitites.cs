@@ -36,11 +36,9 @@ public partial class ModSharpProfiler
         int index = 0;
         foreach (var entity in Entities)
         {
-            var str = $"Performance Test Entity #{index}{Random.Shared.NextInt64()}";
-            entity.SetNetVar("m_messageText", str, str.Length);
-            entity.NetworkStateChanged("m_messageText");
-            entity.SetNetVar("m_Color", new Color32(255, 0, 0, 0));
-            entity.NetworkStateChanged("m_Color");
+            var worldTextEntity = entity.As<IWorldText>();
+            worldTextEntity.Message = $"Performance Test Entity #{index}{Random.Shared.NextInt64()}";
+            worldTextEntity.Color = new Color32(255, 0, 0, 0);
             index++;
         }
         profilerService.StopRecording($"Schema Write + Update ({Entities.Count} entities)");
@@ -50,24 +48,9 @@ public partial class ModSharpProfiler
     {
         profilerService.StartRecording("Get Game Rules");
 
-        var gameRulesProxy = _entityManager.FindEntityByClassname(null, "cs_gamerules")!;
-        var gameRulesOffset = gameRulesProxy.GetNetVarOffset("m_pGameRules");
-        unsafe
-        {
-            var gameRules = Unsafe.Read<nint>((void*)(gameRulesProxy.GetAbsPtr() + gameRulesOffset));
-        }
+        var gameRules = _modSharp.GetGameRules();
 
         profilerService.StopRecording("Get Game Rules");
-    }
-
-    private static Color GetColorValue(IBaseEntity entity, string propertyName)
-    {
-        unsafe
-        {
-            var netvarOffset = entity.GetNetVarOffset(propertyName);
-            var color = *(Color*)(entity.GetAbsPtr() + netvarOffset);
-            return color;
-        }
     }
 
     public void SchemaReadEntities()
@@ -75,10 +58,11 @@ public partial class ModSharpProfiler
         profilerService.StartRecording($"Schema Read ({Entities.Count} entities)");
         foreach (var entity in Entities)
         {
-            var message = entity.GetNetVar<string>("m_messageText");
-            var color = GetColorValue(entity, "m_Color");
-            var enabled = entity.GetNetVar<bool>("m_bEnabled");
-            var testColor = new Color32((byte)Math.Clamp(GetColorValue(entity, "m_Color").R * 2, 0, 255), (byte)Math.Clamp(GetColorValue(entity, "m_Color").G * 2, 0, 255), (byte)Math.Clamp(GetColorValue(entity, "m_Color").B * 2, 0, 255), 0);
+            var worldTextEntity = entity.As<IWorldText>();
+            var message = worldTextEntity.Message;
+            var color = worldTextEntity.Color;
+            var enabled = worldTextEntity.Enabled;
+            var testColor = new Color32((byte)Math.Clamp(worldTextEntity.Color.R * 2, 0, 255), (byte)Math.Clamp(worldTextEntity.Color.G * 2, 0, 255), (byte)Math.Clamp(worldTextEntity.Color.B * 2, 0, 255), 0);
         }
         profilerService.StopRecording($"Schema Read ({Entities.Count} entities)");
     }
