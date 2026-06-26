@@ -1,0 +1,19 @@
+{
+	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+	"version": "1.0.0",
+	"name": "PlugifyProfiler",
+	"description": "",
+	"author": "untrustedmodders",
+	"website": "https://github.com/untrustedmodders/",
+	"license": "MIT",
+	"entry": "PlugifyProfiler.dll",
+	"platforms": [],
+	"language": "dotnet",
+	"dependencies": [
+	    {
+	        "name": "s2sdk"
+	    }
+	],
+	"methods": [
+	]
+}
